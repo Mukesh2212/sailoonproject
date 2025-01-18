@@ -333,6 +333,7 @@ class AdvertismentView(APIView):
         
 
 class ForgotPasswordView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         email = request.data.get('email')
         if not email:
@@ -343,19 +344,19 @@ class ForgotPasswordView(APIView):
             return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        base_url = request.build_absolute_uri('/')  # Get the base URL
-        reset_url = f"{base_url}api/reset-password-confirm/{uid}/{token}/"
+        reset_url = request.build_absolute_uri(reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
         send_mail(
             'Password Reset Request',
             f'Click the link below to reset your password:\n{reset_url}',
             'mk2648054@gmail.com',
-            [user.email],
+            [email],
             fail_silently=False,
         )
         return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
     
     
 class PasswordResetConfirmView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, uidb64, token):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
@@ -392,6 +393,7 @@ class PasswordResetConfirmView(APIView):
 
 
 class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
     def get_object(self, email):
         User = get_user_model()

@@ -172,7 +172,7 @@ class LogoutSerializer(serializers.Serializer):
         'bad_token':'Token is expiered or Invalid '
     }
     def validate(self,attrs):
-        self.tokent = attrs['refresh']
+        self.tokent = attrs['refresh'] or attrs.get('refresh')
         return attrs 
     def save(self,**kwargs):
         try:
