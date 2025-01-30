@@ -35,3 +35,4 @@ class AppointmentCustomerAdmin(admin.ModelAdmin):
 class AdvertisementAdmin(admin.ModelAdmin):
     list_display = ['id','title','description','image','start_date','end_date','target_audience','age','range','location']
     
+admin.site.register(School)

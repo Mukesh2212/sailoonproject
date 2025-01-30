@@ -74,3 +74,8 @@ class Advertisement(models.Model): # user or business_saloon create advertisment
     target_audience = models.CharField(max_length=200,choices=target_catogery,null=True,blank=True)
     location = models.CharField(max_length=200,null=True,blank=True) 
 
+
+class School(models.Model):
+    name = models.CharField(max_length=200,null=True,blank=True)
+    address = models.CharField(max_length=200,null=True,blank=True) 
+    contact = models.CharField(max_length=13,null=True,blank=True)
