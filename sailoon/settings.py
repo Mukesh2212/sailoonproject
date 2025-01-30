@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-&%dj3e8w0+s*wc$^i)=%!ri1g6l&2nh$vn6#eijpsx*x8)z)+m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','209.38.120.165' , 'holanine.icu']
 
 
 # Application definition
@@ -134,12 +134,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = "/var/www/sailoonproject/static/"
+
 MEDIA_URL = '/media/'
-# STATIC_DIR = os.path.join(BASE_DIR,'static')
-# STATICFILES_DIRS =  [BASE_DIR/"static/"]
-MEDIA_ROOT = 'media'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+MEDIA_ROOT = "/var/www/sailoonproject/media/"
+
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
