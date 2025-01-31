@@ -32,10 +32,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan 209.38.120.165 >> ~/.ssh/known_hosts  # Ensure SSH knows the droplet's fingerprint
+          ssh-keyscan holanine.icu >> ~/.ssh/known_hosts  # Use your domain instead of the IP
 
           # SSH into the server and deploy the app
-          ssh root@209.38.120.165 << EOF
+          ssh root@holanine.icu << EOF  # Use the domain name here
             # Navigate to your project directory
             cd /root/sailoonproject
 
