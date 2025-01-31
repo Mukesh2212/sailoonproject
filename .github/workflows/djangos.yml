@@ -3,7 +3,10 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches:
-      - master  # This triggers the action on pushes to the 'master' branch
+      - master  # Trigger the action when pushing to 'master' branch
+  pull_request:
+    branches:
+      - master  # Trigger the action when a pull request is created targeting the 'master' branch
 
 jobs:
   deploy:
@@ -20,9 +23,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+          python -m venv env  # Create the virtual environment using 'env' as the name
+          source env/bin/activate  # Activate the 'env' virtual environment
+          pip install -r requirements.txt  # Install dependencies
 
       - name: Deploy to DigitalOcean
         env:
@@ -43,7 +46,7 @@ jobs:
             git pull origin master  # Ensure it pulls from 'master' branch
 
             # Activate the existing virtual environment
-            source /root/sailoonproject/env/bin/activate
+            source /root/sailoonproject/env/bin/activate  # Ensure the 'env' is used
 
             # Install the latest dependencies
             pip install -r requirements.txt
