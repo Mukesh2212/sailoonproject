@@ -1,0 +1,60 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main  # Change to the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Deploy to DigitalOcean
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Setup SSH for accessing the droplet
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 209.38.120.165 >> ~/.ssh/known_hosts  # Ensure SSH knows the droplet's fingerprint
+
+          # SSH into the server and deploy the app
+          ssh root@209.38.120.165 << EOF
+            # Navigate to your project directory
+            cd /root/sailoonproject
+
+            # Pull the latest code from GitHub
+            git pull origin main
+
+            # Activate the existing virtual environment
+            source /root/sailoonproject/env/bin/activate
+
+            # Install the latest dependencies
+            pip install -r requirements.txt
+
+            # Apply database migrations
+            python manage.py migrate
+
+            # Collect static files for production
+            python manage.py collectstatic --noinput
+
+            # Restart Gunicorn and Nginx to apply changes
+            sudo systemctl restart gunicorn
+            sudo systemctl restart nginx
+          EOF
