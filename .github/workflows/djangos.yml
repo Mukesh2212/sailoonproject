@@ -3,7 +3,7 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches:
-      - main  # Change to the branch you want to deploy from
+      - master  # This triggers the action on pushes to the 'master' branch
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # Specify the Python version you want to use
 
       - name: Install dependencies
         run: |
@@ -40,7 +40,7 @@ jobs:
             cd /root/sailoonproject
 
             # Pull the latest code from GitHub
-            git pull origin main
+            git pull origin master  # Ensure it pulls from 'master' branch
 
             # Activate the existing virtual environment
             source /root/sailoonproject/env/bin/activate
